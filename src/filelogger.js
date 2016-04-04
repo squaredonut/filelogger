@@ -165,6 +165,11 @@ angular.module('fileLogger', ['ngCordova.plugins.file'])
           q.resolve();
 
         } else {
+          if(!cordova.file && !cordova.file.dataDirectory){
+            q.reject('cordova.file.dataDirectory is not available yet.');
+            return q.promise;
+          }
+
           $cordovaFile.checkFile(cordova.file.dataDirectory, storageFilename).then(
             function(fileInfo) {
               //Overwrite when file exceeds 5 megabytes
