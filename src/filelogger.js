@@ -165,7 +165,7 @@ angular.module('fileLogger', ['ngCordova.plugins.file'])
           q.resolve();
 
         } else {
-          if(!cordova.file && !cordova.file.dataDirectory){
+          if(!cordova && !cordova.file && !cordova.file.dataDirectory){
             q.reject('cordova.file.dataDirectory is not available yet.');
             return q.promise;
           }
@@ -220,6 +220,11 @@ angular.module('fileLogger', ['ngCordova.plugins.file'])
         if (isBrowser()) {
           q.resolve($window.localStorage[storageFilename]);
         } else {
+          if(!cordova && !cordova.file && !cordova.file.dataDirectory){
+            q.reject('cordova.file.dataDirectory is not available yet.');
+            return q.promise;
+          }
+
           $cordovaFile.readAsText(cordova.file.dataDirectory, storageFilename).then(
             function(result) {
               q.resolve(result);
@@ -241,6 +246,11 @@ angular.module('fileLogger', ['ngCordova.plugins.file'])
           $window.localStorage.removeItem(storageFilename);
           q.resolve();
         } else {
+          if(!cordova && !cordova.file && !cordova.file.dataDirectory){
+            q.reject('cordova.file.dataDirectory is not available yet.');
+            return q.promise;
+          }
+
           $cordovaFile.removeFile(cordova.file.dataDirectory, storageFilename).then(
             function(result) {
               q.resolve(result);
@@ -291,6 +301,11 @@ angular.module('fileLogger', ['ngCordova.plugins.file'])
           });
 
         } else {
+
+          if(!cordova && !cordova.file && !cordova.file.dataDirectory){
+            q.reject('cordova.file.dataDirectory is not available yet.');
+            return q.promise;
+          }
 
           $cordovaFile.checkFile(cordova.file.dataDirectory, storageFilename).then(function(fileEntry) {
             fileEntry.file(q.resolve, q.reject);
